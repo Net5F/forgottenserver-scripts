@@ -1,0 +1,43 @@
+I ran into a ton of issues while trying to get forgottenserver and otclient working. This doc contains the problems and solutions.
+
+- Uniform Server Zero 13.3.2, mentioned by the OTS Guide, doesn't have a new enough version of PHP to run the ZNote AAC site.
+
+- Tried versions 14 and 15. PHP version problem is fixed, but it stops at a 500 error.
+    Apache server log: Uncaught mysqli_sql_exception: Access denied for user 'tfs13'@'localhost'
+    Apparently it's supposed to also generate a database schema to add for the website's tables, but it isn't.
+    Related:
+        https://github.com/Znote/ZnoteAAC/issues/532
+        https://github.com/Znote/ZnoteAAC/issues/520
+        
+- Tried ZNote AAC versions 2 and 1.6, same issue on both.
+
+- Tried using the schema from this post, but it failed to import (error about '$time') https://otland.net/threads/need-help-with-my-website.233437/post-2250826
+
+- Searched for a commit mentioning the schema. Found https://github.com/Znote/ZnoteAAC/commit/a54d001e771fd5dd03e03b4403d808924dc385d3 which led me to engine/database/znote_schema.sql
+    Running the commands from that file added the needed tables
+    
+- Site error: "Configuration error! Cannot save cache to memory, but it is configured to do so."
+    Related: https://otland.net/threads/account-creation-znote-aac-problem.279037/
+        Changes were already present, issue still persists.
+    Doesn't seem to block you from creating an account/character
+
+- otclient docs are missing openssl in dependency list
+    .\vcpkg.exe install openssl:x64-windows
+    
+- otclient requires finding spr/dat files elsewhere
+    otland thread "Where can I download Tibia Client 10.98 safely?"
+    
+- otclient needs server port
+    https://github.com/otland/forgottenserver/blob/31d6e85de2a86fb3f0e36c63509fba75b855b8bd/config.lua.dist#L24
+    
+- The towns that are selectable when creating a character are all invalid.
+    Pick one, then in phpMyAdmin go to: players -> <character name> -> Edit, then scroll down and change the town to 1.
+
+- The effect drawing algorithm is broken for certain area patterns.
+    Related: https://otland.net/threads/spell-animation-doesnt-cover-the-entire-area.288726/
+    Tried prebuilt otclientv8 at https://github.com/OTCv8/otclientv8
+        Similar issues
+    Tried otclientv8
+        Requires boost.config: .\vcpkg.exe install boost-config:x64-windows
+        Similar issues
+    Ended up just working around it

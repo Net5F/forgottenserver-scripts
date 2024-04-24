@@ -1,0 +1,19 @@
+MyButton < Button
+  id: myButton
+  size: 70 26
+  text: Jump!
+  !tooltip: tr('Jump!')
+
+MiniWindow
+  id: myWindow
+  !text: tr('MyWindow')
+  icon: /images/topbuttons/inventory
+  height: 175
+  @onClose: modules.game_question7.onMiniWindowClose()
+  &save: true
+
+  MiniWindowContents
+    MyButton
+      margin-top: 3
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter

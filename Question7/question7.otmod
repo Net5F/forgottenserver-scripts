@@ -1,0 +1,9 @@
+Module
+  name: game_question7
+  description: Solution for question 7
+  author: Net
+  website: https://github.com/edubart/otclient
+  sandboxed: true
+  scripts: [ question7 ]
+  @onLoad: init()
+  @onUnload: terminate()
