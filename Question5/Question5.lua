@@ -1,3 +1,5 @@
+-- Question 5 - Spell script.
+
 -- The number of times that we'll update the spell effect.
 local UPDATE_COUNT = 10
 
@@ -16,7 +18,7 @@ for i = 1, UPDATE_COUNT do
 end
 
 -- Fill the areas with random values.
--- (We set the seed so that it doesn't change when the server restarts).
+-- (We need to set the seed so that the spell is always consistent).
 math.randomseed(42)
 for i = 1, #areas do
     for j = 1, #areas[i] do
@@ -43,7 +45,7 @@ for i = 1, UPDATE_COUNT do
     combats[i]:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ICETORNADO)
     combats[i]:setArea(createCombatArea(areas[i]))
     
-    -- Workaround for callback getting consumed: https://otland.net/threads/tfs-1-x-combat-setcallbackfunction-event-function.283490/
+    -- Workaround for formula callback getting consumed: https://otland.net/threads/tfs-1-x-combat-setcallbackfunction-event-function.283490/
     temporaryGlobalCallbackFunction = loadstring(string.dump(onGetFormulaValues))
     combats[i]:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "temporaryGlobalCallbackFunction")
 end
